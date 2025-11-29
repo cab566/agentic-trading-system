@@ -1,0 +1,27 @@
+{
+  "test_id": "batch_opt_test_1759961415",
+  "start_time": "2025-10-08T18:10:15.175200",
+  "end_time": "2025-10-08T18:10:15.253333",
+  "duration_seconds": 0.078133,
+  "tests_passed": 0,
+  "total_tests": 4,
+  "success_rate": 0.0,
+  "results": {
+    "Volume Spike Scanner": {
+      "status": "failed",
+      "error": "name 'max_connections' is not defined"
+    },
+    "Sector Rotation Detector": {
+      "status": "failed",
+      "error": "name 'max_connections' is not defined"
+    },
+    "Technical Breakout Scanner": {
+      "status": "failed",
+      "error": "name 'max_connections' is not defined"
+    },
+    "Earnings Calendar Monitor": {
+      "status": "failed",
+      "error": "name 'max_connections' is not defined"
+    }
+  }
+}

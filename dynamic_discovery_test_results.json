@@ -1,0 +1,146 @@
+{
+  "test_summary": {
+    "total_tests": 6,
+    "passed_tests": 6,
+    "failed_tests": 0,
+    "success_rate": "100.0%",
+    "total_execution_time": "4.66s"
+  },
+  "test_results": {
+    "volume_spike_scanner": {
+      "status": "success",
+      "results_count": 0,
+      "sample_results": [],
+      "symbols_tested": [
+        "AAPL",
+        "MSFT",
+        "GOOGL"
+      ],
+      "execution_time": 0.918278
+    },
+    "news_driven_discovery": {
+      "status": "success",
+      "results_count": 0,
+      "sample_results": [],
+      "symbols_tested": [
+        "AAPL",
+        "MSFT",
+        "GOOGL"
+      ],
+      "execution_time": 0.256553
+    },
+    "technical_breakout_scanner": {
+      "status": "success",
+      "results_count": 1,
+      "sample_results": [
+        {
+          "symbol": "MSFT",
+          "pattern_type": "ma_crossover",
+          "current_price": 524.8499755859375,
+          "resistance_level": 531.030029296875,
+          "sma_20": 514.338996887207,
+          "sma_50": 513.4645544433594,
+          "strength": "medium",
+          "timestamp": "2025-10-08 16:49:34.959339"
+        }
+      ],
+      "symbols_tested": [
+        "AAPL",
+        "MSFT",
+        "GOOGL"
+      ],
+      "execution_time": 0.253485
+    },
+    "earnings_calendar_monitor": {
+      "status": "success",
+      "results_count": 3,
+      "sample_results": [
+        {
+          "symbol": "AAPL",
+          "earnings_date": "2025-10-11 16:49:35.274345",
+          "days_until_earnings": 2,
+          "estimated_impact": "high",
+          "sector": "Technology",
+          "market_cap": 3829710979072,
+          "timestamp": "2025-10-08 16:49:35.274394"
+        },
+        {
+          "symbol": "MSFT",
+          "earnings_date": "2025-10-25 16:49:35.645058",
+          "days_until_earnings": 16,
+          "estimated_impact": "high",
+          "sector": "Technology",
+          "market_cap": 3901297262592,
+          "timestamp": "2025-10-08 16:49:35.645086"
+        }
+      ],
+      "symbols_tested": [
+        "AAPL",
+        "MSFT",
+        "GOOGL",
+        "TSLA",
+        "NVDA"
+      ],
+      "execution_time": 1.335851
+    },
+    "sector_rotation_detector": {
+      "status": "success",
+      "results_count": 2,
+      "sample_results": [
+        {
+          "sector": "Technology",
+          "etf_symbol": "XLK",
+          "rotation_signal": "inflow",
+          "relative_strength": 5.6800702173668505,
+          "returns_30d": 10.063741164007656,
+          "returns_7d": 3.1327671712003013,
+          "strength": "high",
+          "timestamp": "2025-10-08 16:49:36.689035"
+        },
+        {
+          "sector": "Consumer",
+          "etf_symbol": "XLY",
+          "rotation_signal": "outflow",
+          "relative_strength": -3.0716051096330244,
+          "returns_30d": 1.312065837007781,
+          "returns_7d": -1.352030337763399,
+          "strength": "medium",
+          "timestamp": "2025-10-08 16:49:37.640085"
+        }
+      ],
+      "sectors_analyzed": [
+        "Technology",
+        "Healthcare",
+        "Finance",
+        "Energy",
+        "Consumer"
+      ],
+      "execution_time": 1.283922
+    },
+    "integrated_discovery": {
+      "status": "success",
+      "test_symbol": "AAPL",
+      "discovery_results": {
+        "volume_spike": 0,
+        "news_driven": 0,
+        "technical_breakout": 0,
+        "earnings_calendar": 1,
+        "sector_rotation": 2
+      },
+      "total_opportunities": 3,
+      "tools_tested": 5,
+      "execution_time": 0.611762
+    }
+  },
+  "timestamp": "2025-10-08T16:49:38.252009",
+  "test_symbols": [
+    "AAPL",
+    "MSFT",
+    "GOOGL",
+    "TSLA",
+    "NVDA",
+    "AMD",
+    "META",
+    "AMZN"
+  ]
+}

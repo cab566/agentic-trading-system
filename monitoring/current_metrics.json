@@ -1,0 +1,19 @@
+{
+  "timestamp": "2025-09-14T22:07:17.980994",
+  "system_status": "RUNNING",
+  "api_connections": {
+    "alpaca": true,
+    "data_feeds": true
+  },
+  "data_feeds_active": true,
+  "strategies_running": 3,
+  "total_trades": 0,
+  "successful_trades": 0,
+  "failed_trades": 0,
+  "portfolio_value": 97052.34,
+  "cash_balance": 118073.84,
+  "total_positions": 0,
+  "alerts_count": 0,
+  "errors_count": 0,
+  "uptime_hours": 0.6668583188888889
+}

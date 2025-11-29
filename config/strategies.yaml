@@ -1,0 +1,475 @@
+# Trading Strategies Configuration
+# Defines all available trading strategies and their parameters
+
+strategies:
+  # Covered Calls Strategy (Migrated from legacy system)
+  covered_calls:
+    enabled: true
+    priority: 1
+    description: "Generate income through covered call options on existing stock positions"
+    
+    parameters:
+      # Stock selection criteria
+      min_market_cap: 1000000000  # $1B minimum market cap
+      min_avg_volume: 1000000     # 1M shares average daily volume
+      max_volatility: 0.40        # 40% maximum implied volatility
+      min_dividend_yield: 0.02    # 2% minimum dividend yield
+      
+      # Options criteria
+      min_days_to_expiration: 7
+      max_days_to_expiration: 45
+      min_delta: 0.15             # Minimum option delta
+      max_delta: 0.35             # Maximum option delta
+      min_premium: 0.50           # Minimum premium per share
+      
+      # Risk management
+      max_position_size: 0.10     # 10% of portfolio per position
+      stop_loss_pct: 0.15         # 15% stop loss
+      profit_target_pct: 0.08     # 8% profit target
+      
+      # Execution settings
+      rebalance_frequency: "weekly"
+      max_positions: 10
+      
+    agents_involved:
+      - market_analyst
+      - risk_manager
+      - trade_executor
+      - portfolio_manager
+
+  # Momentum Strategy
+  momentum:
+    enabled: true
+    priority: 2
+    description: "Capitalize on price momentum using technical indicators"
+    
+    parameters:
+      # Universe selection
+      universe: "SP500"           # Stock universe
+      min_market_cap: 500000000   # $500M minimum
+      min_avg_volume: 500000      # 500K shares daily volume
+      
+      # Technical indicators
+      rsi_period: 14
+      rsi_oversold: 30
+      rsi_overbought: 70
+      
+      sma_short: 20               # Short-term moving average
+      sma_long: 50                # Long-term moving average
+      
+      macd_fast: 12
+      macd_slow: 26
+      macd_signal: 9
+      
+      # Entry/Exit criteria
+      momentum_threshold: 0.05    # 5% momentum threshold
+      volume_confirmation: true   # Require volume confirmation
+      
+      # Risk management
+      max_position_size: 0.05     # 5% of portfolio per position
+      stop_loss_pct: 0.08         # 8% stop loss
+      profit_target_pct: 0.15     # 15% profit target
+      trailing_stop_pct: 0.05     # 5% trailing stop
+      
+      # Position management
+      max_positions: 15
+      rebalance_frequency: "daily"
+      holding_period_max: 30      # Maximum days to hold
+      
+    agents_involved:
+      - market_analyst
+      - risk_manager
+      - trade_executor
+
+  # Mean Reversion Strategy
+  mean_reversion:
+    enabled: true
+    priority: 3
+    description: "Profit from price reversals using statistical mean reversion"
+    
+    parameters:
+      # Universe selection
+      universe: "NASDAQ100"
+      min_market_cap: 1000000000  # $1B minimum
+      min_avg_volume: 1000000     # 1M shares daily volume
+      
+      # Mean reversion indicators
+      bollinger_period: 20
+      bollinger_std: 2.0
+      
+      z_score_period: 20
+      z_score_entry: 2.0          # Enter when |z-score| > 2.0
+      z_score_exit: 0.5           # Exit when |z-score| < 0.5
+      
+      # Additional filters
+      min_volatility: 0.15        # 15% minimum volatility
+      max_volatility: 0.50        # 50% maximum volatility
+      
+      # Risk management
+      max_position_size: 0.04     # 4% of portfolio per position
+      stop_loss_pct: 0.10         # 10% stop loss
+      profit_target_pct: 0.06     # 6% profit target
+      
+      # Position management
+      max_positions: 20
+      rebalance_frequency: "daily"
+      max_holding_period: 14      # Maximum days to hold
+      
+    agents_involved:
+      - market_analyst
+      - risk_manager
+      - trade_executor
+
+  # Pairs Trading Strategy
+  pairs_trading:
+    enabled: false  # Disabled by default - requires more development
+    priority: 4
+    description: "Market-neutral strategy trading correlated stock pairs"
+    
+    parameters:
+      # Pair selection
+      min_correlation: 0.80       # Minimum historical correlation
+      correlation_period: 252     # Days for correlation calculation
+      
+      # Cointegration testing
+      cointegration_pvalue: 0.05  # P-value threshold
+      adf_test_period: 252        # Days for ADF test
+      
+      # Trading signals
+      zscore_entry: 2.0           # Enter when spread z-score > 2.0
+      zscore_exit: 0.0            # Exit when spread z-score crosses 0
+      zscore_stop: 3.0            # Stop loss when z-score > 3.0
+      
+      # Risk management
+      max_pair_exposure: 0.10     # 10% of portfolio per pair
+      max_pairs: 5
+      
+    agents_involved:
+      - market_analyst
+      - risk_manager
+      - trade_executor
+      - research_agent
+
+  # Earnings Momentum Strategy
+  earnings_momentum:
+    enabled: true
+    priority: 5
+    description: "Trade stocks around earnings announcements based on momentum"
+    
+    parameters:
+      # Earnings criteria
+      days_before_earnings: 5     # Start monitoring 5 days before
+      days_after_earnings: 3      # Hold for 3 days after
+      
+      # Momentum filters
+      min_earnings_surprise: 0.05 # 5% minimum earnings surprise
+      min_revenue_surprise: 0.03  # 3% minimum revenue surprise
+      
+      # Technical confirmation
+      volume_spike_threshold: 2.0 # 2x average volume
+      price_momentum_threshold: 0.03  # 3% price move
+      
+      # Risk management
+      max_position_size: 0.03     # 3% of portfolio per position
+      stop_loss_pct: 0.12         # 12% stop loss
+      profit_target_pct: 0.20     # 20% profit target
+      
+      # Position limits
+      max_positions: 8
+      
+    agents_involved:
+      - research_agent
+      - market_analyst
+      - risk_manager
+      - trade_executor
+
+  # Cryptocurrency Trading Strategies
+  crypto_momentum:
+    enabled: true
+    priority: 6
+    description: "24/7 cryptocurrency momentum trading with enhanced risk management"
+    
+    parameters:
+      # Universe selection
+      universe: ["BTCUSDT", "ETHUSDT", "ADAUSDT", "SOLUSDT", "MATICUSDT", "DOTUSDT", "AVAXUSDT", "LINKUSDT"]
+      min_market_cap: 1000000000  # $1B minimum market cap
+      min_24h_volume: 100000000   # $100M minimum 24h volume
+      
+      # Technical indicators (adapted for crypto volatility)
+      rsi_period: 14
+      rsi_oversold: 25            # More aggressive for crypto
+      rsi_overbought: 75
+      
+      sma_short: 12               # Shorter periods for 24/7 trading
+      sma_long: 26
+      
+      # Crypto-specific indicators
+      fear_greed_threshold: 20    # Fear & Greed Index threshold
+      social_sentiment_weight: 0.3 # Weight for social sentiment
+      
+      # Entry/Exit criteria
+      momentum_threshold: 0.08    # 8% momentum threshold (higher for crypto)
+      volume_confirmation: true
+      
+      # Risk management (enhanced for crypto volatility)
+      max_position_size: 0.03     # 3% of portfolio per position
+      stop_loss_pct: 0.15         # 15% stop loss
+      profit_target_pct: 0.25     # 25% profit target
+      trailing_stop_pct: 0.08     # 8% trailing stop
+      
+      # 24/7 Position management
+      max_positions: 8
+      rebalance_frequency: "4h"    # Every 4 hours
+      holding_period_max: 7       # Maximum days to hold
+      
+      # 24/7 Trading sessions
+      trading_sessions:
+        always_active: true
+        weekend_trading: true
+        reduced_size_weekends: 0.5  # 50% position size on weekends
+      
+    agents_involved:
+      - market_analyst
+      - risk_manager
+      - trade_executor
+
+  crypto_mean_reversion:
+    enabled: true
+    priority: 7
+    description: "Cryptocurrency mean reversion strategy for major coins"
+    
+    parameters:
+      # Universe selection (focus on major, more stable cryptos)
+      universe: ["BTCUSDT", "ETHUSDT", "BNBUSDT", "XRPUSDT"]
+      min_market_cap: 5000000000  # $5B minimum for stability
+      
+      # Mean reversion indicators
+      bollinger_period: 20
+      bollinger_std: 2.5          # Wider bands for crypto volatility
+      
+      z_score_period: 14          # Shorter period for crypto
+      z_score_entry: 2.5          # Higher threshold for crypto
+      z_score_exit: 0.3
+      
+      # Volatility filters
+      min_volatility: 0.30        # 30% minimum volatility
+      max_volatility: 1.50        # 150% maximum volatility
+      
+      # Risk management
+      max_position_size: 0.025    # 2.5% of portfolio per position
+      stop_loss_pct: 0.20         # 20% stop loss
+      profit_target_pct: 0.12     # 12% profit target
+      
+      # Position management
+      max_positions: 6
+      rebalance_frequency: "6h"    # Every 6 hours
+      max_holding_period: 5       # Maximum days to hold
+      
+    agents_involved:
+      - market_analyst
+      - risk_manager
+      - trade_executor
+
+  # Forex Trading Strategies
+  forex_carry_trade:
+    enabled: true
+    priority: 8
+    description: "24/5 forex carry trade strategy exploiting interest rate differentials"
+    
+    parameters:
+      # Currency pairs (major pairs with good carry potential)
+      universe: ["EUR/USD", "GBP/USD", "USD/JPY", "AUD/USD", "NZD/USD", "USD/CAD", "USD/CHF"]
+      
+      # Carry trade criteria
+      min_interest_differential: 0.01  # 1% minimum rate differential
+      trend_confirmation: true         # Require trend alignment
+      
+      # Technical filters
+      sma_short: 20
+      sma_long: 50
+      rsi_period: 14
+      rsi_neutral_min: 40
+      rsi_neutral_max: 60
+      
+      # Risk management
+      max_position_size: 0.04     # 4% of portfolio per pair
+      stop_loss_pct: 0.03         # 3% stop loss (tight for forex)
+      profit_target_pct: 0.06     # 6% profit target
+      
+      # Position management
+      max_positions: 6
+      rebalance_frequency: "daily"
+      holding_period_min: 7       # Minimum days to hold (carry trades need time)
+      
+      # Trading sessions (24/5 forex market)
+      trading_sessions:
+        london_open: "08:00"        # UTC
+        new_york_open: "13:00"      # UTC
+        tokyo_open: "00:00"        # UTC
+        avoid_weekends: true
+        reduce_friday_positions: true
+      
+    agents_involved:
+      - market_analyst
+      - risk_manager
+      - trade_executor
+
+  forex_breakout:
+    enabled: true
+    priority: 9
+    description: "Forex breakout strategy for major currency pairs"
+    
+    parameters:
+      # Currency pairs (focus on volatile majors)
+      universe: ["EUR/USD", "GBP/USD", "USD/JPY", "GBP/JPY", "EUR/GBP"]
+      
+      # Breakout detection
+      lookback_period: 20         # Days for range calculation
+      breakout_threshold: 0.75    # 75% of recent range
+      volume_confirmation: true   # Require volume spike
+      
+      # Technical confirmation
+      atr_period: 14              # Average True Range
+      atr_multiplier: 1.5         # ATR multiplier for stops
+      
+      # News filter
+      avoid_high_impact_news: true
+      news_buffer_hours: 2        # Hours before/after news
+      
+      # Risk management
+      max_position_size: 0.03     # 3% of portfolio per pair
+      stop_loss_atr_multiple: 2.0 # 2x ATR stop loss
+      profit_target_atr_multiple: 3.0  # 3x ATR profit target
+      
+      # Position management
+      max_positions: 5
+      rebalance_frequency: "4h"    # Every 4 hours
+      max_holding_period: 3       # Maximum days to hold
+      
+    agents_involved:
+      - market_analyst
+      - risk_manager
+      - trade_executor
+      - research_agent            # For news analysis
+
+# Strategy allocation and portfolio management
+portfolio_management:
+  # Portfolio settings
+  initial_capital: 100000.0    # Starting capital in USD
+  risk_free_rate: 0.02         # Risk-free rate (2% annual)
+  
+  # Overall allocation across strategies
+  strategy_allocation:
+    # Traditional strategies (60% total)
+    covered_calls: 0.25         # 25% of portfolio
+    momentum: 0.15              # 15% of portfolio
+    mean_reversion: 0.12        # 12% of portfolio
+    earnings_momentum: 0.08     # 8% of portfolio
+    pairs_trading: 0.00         # 0% (disabled)
+    
+    # Cryptocurrency strategies (25% total)
+    crypto_momentum: 0.15       # 15% of portfolio
+    crypto_mean_reversion: 0.10 # 10% of portfolio
+    
+    # Forex strategies (15% total)
+    forex_carry_trade: 0.08     # 8% of portfolio
+    forex_breakout: 0.07        # 7% of portfolio
+    
+  # Rebalancing settings
+  rebalancing:
+    frequency: "weekly"          # Options: daily, weekly, monthly
+    threshold: 0.05             # Rebalance if allocation drifts > 5%
+    min_trade_size: 100         # Minimum shares per trade
+    
+  # Risk limits (portfolio level)
+  risk_limits:
+    max_portfolio_leverage: 1.0 # No leverage
+    max_sector_exposure: 0.30   # 30% max in any sector
+    max_single_position: 0.10   # 10% max in any single stock
+    max_daily_trades: 50        # Maximum trades per day
+    
+  # Performance targets
+  targets:
+    annual_return: 0.15         # 15% target annual return
+    max_drawdown: 0.10          # 10% maximum drawdown
+    sharpe_ratio: 1.5           # Target Sharpe ratio
+    win_rate: 0.60              # 60% target win rate
+
+# Strategy execution settings
+execution:
+  # Order management
+  order_types:
+    default: "limit"            # Default order type
+    market_hours_only: true     # Only trade during market hours
+    
+  # Timing
+  execution_delay: 1           # Seconds between order placement
+  max_execution_time: 300      # Maximum seconds to fill order
+  
+  # Slippage and costs
+  expected_slippage: 0.001     # 0.1% expected slippage
+  commission_per_share: 0.005  # $0.005 per share commission
+  
+# Backtesting and validation
+backtesting:
+  # Data requirements
+  min_history_days: 252        # Minimum days of historical data
+  warm_up_period: 60           # Days for indicator warm-up
+  
+  # Validation settings
+  out_of_sample_pct: 0.20      # 20% out-of-sample testing
+  walk_forward_steps: 12       # Monthly walk-forward steps
+  
+  # Performance metrics
+  benchmark: "SPY"             # Benchmark for comparison
+  risk_free_rate: 0.02         # 2% risk-free rate
+  
+# Monitoring and alerts
+monitoring:
+  # Performance tracking
+  track_metrics:
+    - "total_return"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "win_rate"
+    - "profit_factor"
+    
+  # Alert conditions
+  alerts:
+    max_drawdown_alert: 0.05    # Alert if drawdown > 5%
+    low_sharpe_alert: 1.0       # Alert if Sharpe < 1.0
+    high_volatility_alert: 0.25 # Alert if volatility > 25%
+    
+  # Reporting
+  reports:
+    daily_summary: true
+    weekly_performance: true
+    monthly_attribution: true
+
+# Development and testing
+development:
+  paper_trading: true          # Enable paper trading mode
+  simulation_mode: false       # Pure simulation (no real orders)
+  debug_logging: false         # Enable debug logs
+  
+  # Testing parameters
+  test_universe_size: 50       # Limit universe size for testing
+  test_capital: 100000         # $100K for testing
+  
+# Strategy-specific agent assignments
+agent_assignments:
+  strategy_coordination:
+    primary: "portfolio_manager"
+    secondary: ["risk_manager"]
+    
+  market_analysis:
+    primary: "market_analyst"
+    secondary: ["research_agent"]
+    
+  risk_assessment:
+    primary: "risk_manager"
+    secondary: ["portfolio_manager"]
+    
+  trade_execution:
+    primary: "trade_executor"
+    secondary: ["risk_manager"]

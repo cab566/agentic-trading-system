@@ -1,0 +1,237 @@
+# CrewAI Agent Configuration
+# This file defines all trading agents and their capabilities
+
+agents:
+  market_analyst:
+    role: "Senior Market Analyst"
+    goal: "Analyze market conditions, identify trading opportunities, and provide actionable insights"
+    backstory: |
+      You are a seasoned market analyst with 15+ years of experience in financial markets.
+      You excel at technical analysis, pattern recognition, and market sentiment analysis.
+      Your insights drive profitable trading decisions across multiple asset classes.
+    
+    capabilities:
+      - Technical analysis and chart pattern recognition
+      - Market sentiment analysis from news and social media
+      - Economic indicator interpretation
+      - Multi-timeframe analysis
+      - Risk-adjusted opportunity identification
+    
+    tools:
+      - market_data_fetcher
+      - technical_analysis_toolkit
+      - sentiment_analyzer
+      - economic_calendar
+      - pattern_recognition
+    
+    memory: true
+    verbose: true
+    allow_delegation: false
+    max_iter: 5
+    max_execution_time: 300
+
+  risk_manager:
+    role: "Chief Risk Officer"
+    goal: "Assess portfolio risk, manage position sizing, and ensure risk limits are maintained"
+    backstory: |
+      You are an expert risk manager with deep knowledge of portfolio theory, VaR models,
+      and risk-adjusted returns. You protect capital while maximizing risk-adjusted profits.
+      Your conservative approach has saved portfolios during market downturns.
+    
+    capabilities:
+      - Portfolio risk assessment and VaR calculation
+      - Position sizing optimization
+      - Correlation analysis and diversification
+      - Stress testing and scenario analysis
+      - Risk limit monitoring and alerts
+    
+    tools:
+      - risk_calculator
+      - portfolio_analyzer
+      - correlation_matrix
+      - var_calculator
+      - stress_tester
+    
+    memory: true
+    verbose: true
+    allow_delegation: false
+    max_iter: 3
+    max_execution_time: 180
+
+  trade_executor:
+    role: "Senior Trade Execution Specialist"
+    goal: "Execute trades efficiently with minimal market impact and optimal timing"
+    backstory: |
+      You are a skilled trade execution specialist with expertise in algorithmic trading,
+      order management, and market microstructure. You ensure trades are executed
+      at the best possible prices with minimal slippage.
+    
+    capabilities:
+      - Optimal order execution and timing
+      - Slippage minimization strategies
+      - Market impact analysis
+      - Order book analysis
+      - Trade monitoring and reporting
+    
+    tools:
+      - order_manager
+      - execution_algo
+      - market_impact_analyzer
+      - trade_tracker
+      - slippage_calculator
+    
+    memory: true
+    verbose: true
+    allow_delegation: false
+    max_iter: 2
+    max_execution_time: 120
+
+  research_agent:
+    role: "Senior Research Analyst"
+    goal: "Conduct comprehensive market research and provide fundamental analysis insights"
+    backstory: |
+      You are a thorough research analyst with expertise in fundamental analysis,
+      earnings analysis, and market intelligence. You uncover hidden opportunities
+      through deep research and data analysis.
+    
+    capabilities:
+      - Fundamental analysis and valuation
+      - Earnings and financial statement analysis
+      - Industry and sector research
+      - News and event impact analysis
+      - Long-term trend identification
+    
+    tools:
+      - fundamental_analyzer
+      - earnings_tracker
+      - news_aggregator
+      - sector_analyzer
+      - valuation_model
+    
+    memory: true
+    verbose: true
+    allow_delegation: false
+    max_iter: 4
+    max_execution_time: 240
+
+  portfolio_manager:
+    role: "Senior Portfolio Manager"
+    goal: "Optimize portfolio allocation, monitor performance, and ensure strategic alignment"
+    backstory: |
+      You are an experienced portfolio manager with expertise in asset allocation,
+      performance attribution, and portfolio optimization. You balance risk and return
+      to achieve superior risk-adjusted performance.
+    
+    capabilities:
+      - Strategic asset allocation
+      - Portfolio optimization and rebalancing
+      - Performance attribution analysis
+      - Benchmark comparison and tracking
+      - Tax-efficient portfolio management
+    
+    tools:
+      - portfolio_optimizer
+      - performance_analyzer
+      - rebalancer
+      - benchmark_tracker
+      - tax_optimizer
+    
+    memory: true
+    verbose: true
+    allow_delegation: true
+    max_iter: 4
+    max_execution_time: 300
+
+# Crew Configuration
+crew_settings:
+  process: "sequential"  # Options: sequential, hierarchical
+  memory: true
+  cache: true
+  max_rpm: 10
+  share_crew: false
+  
+  # Hierarchical process settings (if process = "hierarchical")
+  manager_llm:
+    model: "gpt-4"
+    temperature: 0.1
+    max_tokens: 2000
+  
+  # Task execution settings
+  task_timeout: 600  # seconds
+  max_retries: 3
+  
+  # Logging and monitoring
+  log_level: "INFO"
+  enable_telemetry: true
+  
+# LLM Configuration
+llm_config:
+  default:
+    model: "gpt-4-turbo-preview"
+    temperature: 0.1
+    max_tokens: 2000
+    timeout: 30
+  
+  analysis:
+    model: "gpt-4"
+    temperature: 0.05
+    max_tokens: 3000
+    timeout: 45
+  
+  execution:
+    model: "gpt-3.5-turbo"
+    temperature: 0.0
+    max_tokens: 1000
+    timeout: 15
+
+# Tool Configuration
+tool_settings:
+  rate_limits:
+    market_data: 100  # requests per minute
+    news_api: 50
+    execution_api: 20
+  
+  timeouts:
+    data_fetch: 30  # seconds
+    analysis: 60
+    execution: 15
+  
+  retries:
+    max_attempts: 3
+    backoff_factor: 2
+    
+# LLM Configuration
+llm_config:
+  default:
+    model: "gpt-4"
+    temperature: 0.1
+    max_tokens: 2000
+    api_key: "${OPENAI_API_KEY}"  # Set via environment variable
+  
+  analysis:
+    model: "gpt-4"
+    temperature: 0.0
+    max_tokens: 3000
+    api_key: "${OPENAI_API_KEY}"
+  
+  execution:
+    model: "gpt-3.5-turbo"
+    temperature: 0.0
+    max_tokens: 1000
+    api_key: "${OPENAI_API_KEY}"
+
+# Environment Settings
+environment:
+  trading_mode: "paper"  # Options: paper, live
+  market_hours_only: true
+  enable_after_hours: false
+  
+  # Risk limits
+  max_position_size: 0.05  # 5% of portfolio
+  max_daily_loss: 0.02     # 2% of portfolio
+  max_drawdown: 0.10       # 10% of portfolio
+  
+  # Performance targets
+  target_sharpe: 1.5
+  target_annual_return: 0.15
+  max_volatility: 0.20

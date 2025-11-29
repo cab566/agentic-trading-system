@@ -1,0 +1,147 @@
+# Comprehensive Monitoring Configuration
+# This file configures the monitoring and alerting system
+
+# Collection settings
+collection_interval: 60  # seconds between metric collections
+retention_days: 30       # days to keep historical data
+
+# Alert configurations
+alerts:
+  # System resource alerts
+  - metric_name: "cpu_percent"
+    threshold: 80.0
+    comparison: "gt"  # greater than
+    severity: "high"
+    cooldown_minutes: 15
+    
+  - metric_name: "memory_percent"
+    threshold: 85.0
+    comparison: "gt"
+    severity: "high"
+    cooldown_minutes: 15
+    
+  - metric_name: "disk_usage_percent"
+    threshold: 90.0
+    comparison: "gt"
+    severity: "critical"
+    cooldown_minutes: 10
+    
+  # Trading performance alerts
+  - metric_name: "max_drawdown"
+    threshold: -0.10  # 10% drawdown
+    comparison: "lt"  # less than (more negative)
+    severity: "critical"
+    cooldown_minutes: 5
+    
+  - metric_name: "daily_pnl"
+    threshold: -1000.0  # $1000 daily loss
+    comparison: "lt"
+    severity: "high"
+    cooldown_minutes: 30
+    
+  - metric_name: "portfolio_value"
+    threshold: 50000.0  # Portfolio below $50k
+    comparison: "lt"
+    severity: "medium"
+    cooldown_minutes: 60
+    
+  - metric_name: "win_rate"
+    threshold: 0.30  # Win rate below 30%
+    comparison: "lt"
+    severity: "medium"
+    cooldown_minutes: 120
+
+# Service endpoints
+endpoints:
+  trading_api: "http://localhost:8000/api/v1"
+  prometheus: "http://localhost:9090"
+  grafana: "http://localhost:3000"
+
+# Dashboard settings
+dashboard:
+  refresh_rate: 1  # seconds
+  auto_scroll: true
+  theme: "dark"
+
+# Notification settings (future enhancement)
+notifications:
+  email:
+    enabled: false
+    smtp_server: ""
+    smtp_port: 587
+    username: ""
+    password: ""
+    recipients: []
+    
+  slack:
+    enabled: false
+    webhook_url: ""
+    channel: "#trading-alerts"
+    
+  discord:
+    enabled: false
+    webhook_url: ""
+
+# Performance thresholds for different severity levels
+thresholds:
+  system:
+    cpu:
+      warning: 70.0
+      critical: 85.0
+    memory:
+      warning: 75.0
+      critical: 90.0
+    disk:
+      warning: 80.0
+      critical: 95.0
+      
+  trading:
+    drawdown:
+      warning: -0.05  # 5%
+      critical: -0.15  # 15%
+    daily_loss:
+      warning: -500.0
+      critical: -2000.0
+    win_rate:
+      warning: 0.40
+      critical: 0.25
+      
+  ai_models:
+    accuracy:
+      warning: 0.60
+      critical: 0.50
+    inference_time:
+      warning: 1.0  # seconds
+      critical: 5.0
+
+# Data export settings
+export:
+  enabled: true
+  formats: ["json", "csv"]
+  schedule: "daily"  # daily, weekly, monthly
+  retention_exported: 90  # days to keep exported files
+
+# Integration settings
+integrations:
+  prometheus:
+    enabled: true
+    port: 8001
+    metrics_path: "/metrics"
+    
+  grafana:
+    enabled: true
+    dashboard_import: true
+    
+  elasticsearch:
+    enabled: false
+    host: "localhost"
+    port: 9200
+    index_prefix: "trading_metrics"
+
+# Logging configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/monitoring.log"
+  max_size: "10MB"
+  backup_count: 5

@@ -1,0 +1,16 @@
+{
+  "execution_mode": "paper_trading",
+  "max_concurrent_strategies": 10,
+  "heartbeat_interval": 30,
+  "health_check_interval": 60,
+  "performance_update_interval": 300,
+  "auto_restart_failed_components": true,
+  "max_restart_attempts": 3,
+  "enable_ml_pipeline": true,
+  "enable_alternative_data": true,
+  "enable_portfolio_optimization": true,
+  "rebalancing_frequency": "daily",
+  "risk_check_frequency": 60,
+  "data_backup_interval": 0,
+  "log_level": "INFO"
+}

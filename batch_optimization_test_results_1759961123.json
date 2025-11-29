@@ -1,0 +1,31 @@
+{
+  "test_run_id": "batch_opt_test_1759961123",
+  "start_time": "2025-10-08T18:05:23.741385",
+  "end_time": "2025-10-08T18:05:23.744459",
+  "total_duration": 0.003074,
+  "tests_run": 4,
+  "tests_passed": 0,
+  "tests_failed": 4,
+  "test_results": [
+    {
+      "tool": "volume_spike_scanner",
+      "status": "failed",
+      "error": "name 'max_connections' is not defined"
+    },
+    {
+      "tool": "sector_rotation_detector",
+      "status": "failed",
+      "error": "ConfigManager.__init__() missing 1 required positional argument: 'config_path'"
+    },
+    {
+      "tool": "technical_breakout_scanner",
+      "status": "failed",
+      "error": "name 'max_connections' is not defined"
+    },
+    {
+      "tool": "earnings_calendar_monitor",
+      "status": "failed",
+      "error": "name 'max_connections' is not defined"
+    }
+  ]
+}

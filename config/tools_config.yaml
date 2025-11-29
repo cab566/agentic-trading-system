@@ -1,0 +1,258 @@
+# Trading System Tools Configuration
+# Defines all available tools, their configurations, and integration settings
+
+# Core Discovery Tools
+discovery_tools:
+  real_time_opportunity_scanner:
+    enabled: true
+    class_name: "RealTimeOpportunityScannerTool"
+    module_path: "tools.real_time_opportunity_scanner"
+    priority: "high"
+    dependencies: ["unified_data_manager", "config_manager", "enhanced_web_scraper", "news_driven_discovery"]
+    config:
+      scan_interval: 30  # seconds
+      max_opportunities: 100
+      alert_thresholds:
+        volume_spike: 2.0
+        price_breakout: 0.05
+        sentiment_shift: 0.3
+      enabled_scanners:
+        - volume_spike
+        - price_breakout
+        - news_events
+        - sentiment_shift
+        - insider_activity
+
+  social_sentiment_analyzer:
+    enabled: true
+    class_name: "SocialSentimentAnalyzerTool"
+    module_path: "tools.social_sentiment_analyzer"
+    priority: "medium"
+    dependencies: ["config_manager"]
+    config:
+      update_interval: 60  # seconds
+      sentiment_threshold: 0.7
+      platforms:
+        - reddit
+        - twitter
+        - stocktwits
+      alert_conditions:
+        sentiment_spike: 0.5
+        volume_threshold: 1000
+
+  cross_asset_arbitrage_detector:
+    enabled: true
+    class_name: "CrossAssetArbitrageDetectorTool"
+    module_path: "tools.cross_asset_arbitrage_detector"
+    priority: "high"
+    dependencies: ["unified_data_manager", "config_manager"]
+    config:
+      scan_interval: 15  # seconds
+      min_spread: 0.001
+      max_risk_level: "medium"
+      asset_classes:
+        - stocks
+        - etfs
+        - options
+        - crypto
+        - forex
+
+  automated_strategy_discovery:
+    enabled: true
+    class_name: "AutomatedStrategyDiscoveryTool"
+    module_path: "tools.automated_strategy_discovery"
+    priority: "medium"
+    dependencies: ["unified_data_manager", "config_manager"]
+    config:
+      discovery_interval: 3600  # 1 hour
+      min_sharpe_ratio: 1.0
+      max_drawdown: 0.15
+      lookback_periods: [30, 60, 90, 180]
+      strategy_types:
+        - momentum
+        - mean_reversion
+        - breakout
+        - pairs_trading
+
+  market_regime_detector:
+    enabled: true
+    class_name: "MarketRegimeDetectorTool"
+    module_path: "tools.market_regime_detector"
+    priority: "high"
+    dependencies: ["unified_data_manager", "config_manager"]
+    config:
+      update_interval: 300  # 5 minutes
+      lookback_window: 252  # trading days
+      confidence_threshold: 0.7
+      regime_features:
+        - trend_strength
+        - volatility
+        - momentum
+        - volume_trend
+
+  economic_calendar_monitor:
+    enabled: false  # DISABLED - Alpha Vantage dependent, demo key has 25 requests/day limit
+    class_name: "EconomicCalendarMonitorTool"
+    module_path: "tools.enhanced_economic_monitor"
+    priority: "medium"
+    dependencies: ["unified_data_manager", "config_manager"]
+    config:
+      update_interval: 3600  # 1 hour
+      lookback_days: 7
+      lookahead_days: 14
+
+  options_flow_analyzer:
+    enabled: true
+    class_name: "OptionsFlowAnalyzerTool"
+    module_path: "tools.options_flow_analyzer"
+    priority: "medium"
+    dependencies: ["unified_data_manager", "config_manager"]
+    config:
+      scan_interval: 60  # seconds
+      unusual_volume_threshold: 2.0
+      min_premium: 10000
+      dark_pool_threshold: 100000
+      gamma_exposure_threshold: 1000000
+
+  earnings_surprise_predictor:
+    enabled: true
+    class_name: "EarningsSurprisePredictorTool"
+    module_path: "tools.earnings_surprise_predictor"
+    priority: "medium"
+    dependencies: ["unified_data_manager", "config_manager"]
+    config:
+      prediction_horizon: 30  # days
+      model_retrain_interval: 86400  # 24 hours
+      confidence_threshold: 0.6
+      data_sources:
+        - social_sentiment
+        - analyst_revisions
+        - options_flow
+        - economic_indicators
+
+# Enhanced Integration Tools
+integration_tools:
+  rd_agent_integration:
+    enabled: true
+    class_name: "RDAgentIntegrationTool"
+    module_path: "tools.rd_agent_integration_tool"
+    priority: "medium"
+    dependencies: ["unified_data_manager", "config_manager"]
+    config:
+      research_interval: 7200  # 2 hours
+      max_concurrent_research: 5
+      strategy_validation_threshold: 0.8
+
+# Legacy Tools (maintained for compatibility)
+legacy_tools:
+  market_data_tool:
+    enabled: true
+    class_name: "MarketDataTool"
+    module_path: "tools.market_data_tool"
+    priority: "high"
+    dependencies: ["unified_data_manager"]
+
+  technical_analysis_tool:
+    enabled: true
+    class_name: "TechnicalAnalysisTool"
+    module_path: "tools.technical_analysis_tool"
+    priority: "high"
+    dependencies: ["unified_data_manager"]
+
+  risk_analysis_tool:
+    enabled: true
+    class_name: "RiskAnalysisTool"
+    module_path: "tools.risk_analysis_tool"
+    priority: "high"
+    dependencies: ["unified_data_manager"]
+
+  order_management_tool:
+    enabled: true
+    class_name: "OrderManagementTool"
+    module_path: "tools.order_management_tool"
+    priority: "critical"
+    dependencies: ["config_manager"]
+
+# Tool Categories for Dashboard Organization
+tool_categories:
+  discovery:
+    - real_time_opportunity_scanner
+    - social_sentiment_analyzer
+    - cross_asset_arbitrage_detector
+    - automated_strategy_discovery
+  
+  analysis:
+    - market_regime_detector
+    - economic_calendar_monitor
+    - options_flow_analyzer
+    - earnings_surprise_predictor
+  
+  integration:
+    - rd_agent_integration
+  
+  core:
+    - market_data_tool
+    - technical_analysis_tool
+    - risk_analysis_tool
+    - order_management_tool
+
+# System Integration Settings
+integration_settings:
+  initialization_order:
+    1: ["market_data_tool", "unified_data_manager", "config_manager"]
+    2: ["technical_analysis_tool", "risk_analysis_tool"]
+    3: ["market_regime_detector", "economic_calendar_monitor"]
+    4: ["real_time_opportunity_scanner", "social_sentiment_analyzer"]
+    5: ["cross_asset_arbitrage_detector", "options_flow_analyzer"]
+    6: ["automated_strategy_discovery", "earnings_surprise_predictor"]
+    7: ["rd_agent_integration", "order_management_tool"]
+
+  health_check_intervals:
+    critical: 30    # seconds
+    high: 60       # seconds
+    medium: 300    # seconds
+    low: 900       # seconds
+
+  error_handling:
+    max_retries: 3
+    retry_delay: 5  # seconds
+    fallback_mode: true
+    alert_on_failure: true
+
+# Dashboard Integration
+dashboard_integration:
+  real_time_widgets:
+    - opportunity_scanner_alerts
+    - sentiment_heatmap
+    - arbitrage_opportunities
+    - market_regime_indicator
+  
+  periodic_updates:
+    - strategy_performance
+    - earnings_predictions
+    - economic_calendar
+    - options_flow_summary
+  
+  alert_channels:
+    - email
+    - slack
+    - dashboard_notifications
+    - system_logs
+
+# Performance Monitoring
+monitoring:
+  metrics_collection:
+    enabled: true
+    interval: 60  # seconds
+    retention_days: 30
+  
+  performance_thresholds:
+    response_time_ms: 1000
+    memory_usage_mb: 500
+    cpu_usage_percent: 80
+    error_rate_percent: 5
+  
+  alerting:
+    enabled: true
+    channels: ["email", "slack"]
+    escalation_levels: ["warning", "critical", "emergency"]

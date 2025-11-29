@@ -1,0 +1,10 @@
+auto_integration: true
+enabled_tools:
+- qlib
+- openbb
+- rd_agent
+- pearl
+- alpaca_mcp
+evaluation_frequency: daily
+learning_rate: 0.01
+safety_checks: true

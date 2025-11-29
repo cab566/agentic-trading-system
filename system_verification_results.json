@@ -1,0 +1,242 @@
+{
+  "timestamp": "2025-09-17T09:33:51.999620",
+  "system_reality": {
+    "running_processes": [
+      {
+        "pid": 82478,
+        "name": "python3.11",
+        "cmdline": "/Users/alec/miniconda3/bin/python -u system_orchestrator.py",
+        "running_since": "2025-09-16T19:16:45.240770"
+      }
+    ],
+    "critical_files": {
+      "system_orchestrator.py": {
+        "exists": true,
+        "size": 62989,
+        "modified": "2025-09-17T08:39:55.940099"
+      },
+      "main.py": {
+        "exists": true,
+        "size": 33678,
+        "modified": "2025-09-14T22:05:10.554361"
+      },
+      "deploy.py": {
+        "exists": true,
+        "size": 16790,
+        "modified": "2025-09-14T22:05:09.535667"
+      },
+      "requirements.txt": {
+        "exists": true,
+        "size": 1664,
+        "modified": "2025-09-14T22:05:09.572621"
+      },
+      ".env": {
+        "exists": true,
+        "size": 2028,
+        "modified": "2025-09-14T22:06:42.645273"
+      }
+    },
+    "environment_config": {
+      ".env": {
+        "exists": true,
+        "trading_mode": "paper",
+        "has_real_keys": false,
+        "size": 2028
+      },
+      ".env.live": {
+        "exists": true,
+        "trading_mode": "live",
+        "has_real_keys": false,
+        "size": 4217
+      },
+      ".env.example": {
+        "exists": true,
+        "trading_mode": "paper",
+        "has_real_keys": true,
+        "size": 10234
+      }
+    }
+  },
+  "testing_status": {
+    "test_files": {
+      "test_integration_simple.py": {
+        "size": 8348,
+        "test_functions": 7,
+        "async_tests": 1,
+        "mock_usage": 11,
+        "integration_tests": true
+      },
+      "test_basic.py": {
+        "size": 3693,
+        "test_functions": 3,
+        "async_tests": 0,
+        "mock_usage": 0,
+        "integration_tests": false
+      },
+      "test_actual_orchestrator.py": {
+        "size": 5278,
+        "test_functions": 2,
+        "async_tests": 0,
+        "mock_usage": 22,
+        "integration_tests": false
+      },
+      "test_venue_routing.py": {
+        "size": 5129,
+        "test_functions": 2,
+        "async_tests": 0,
+        "mock_usage": 0,
+        "integration_tests": false
+      },
+      "test_pydantic_fixes.py": {
+        "size": 4770,
+        "test_functions": 1,
+        "async_tests": 0,
+        "mock_usage": 0,
+        "integration_tests": false
+      },
+      "test_market_hours_fix.py": {
+        "size": 6886,
+        "test_functions": 1,
+        "async_tests": 0,
+        "mock_usage": 9,
+        "integration_tests": false
+      },
+      "test_tools_simple.py": {
+        "size": 5838,
+        "test_functions": 4,
+        "async_tests": 1,
+        "mock_usage": 31,
+        "integration_tests": false
+      },
+      "test_strategies.py": {
+        "size": 2236,
+        "test_functions": 1,
+        "async_tests": 1,
+        "mock_usage": 0,
+        "integration_tests": false
+      },
+      "test_system_comprehensive.py": {
+        "size": 19430,
+        "test_functions": 8,
+        "async_tests": 2,
+        "mock_usage": 18,
+        "integration_tests": true
+      },
+      "test_data_manager.py": {
+        "size": 15014,
+        "test_functions": 19,
+        "async_tests": 15,
+        "mock_usage": 76,
+        "integration_tests": true
+      },
+      "conftest.py": {
+        "size": 11235,
+        "test_functions": 1,
+        "async_tests": 0,
+        "mock_usage": 88,
+        "integration_tests": false
+      },
+      "__init__.py": {
+        "size": 42,
+        "test_functions": 0,
+        "async_tests": 0,
+        "mock_usage": 0,
+        "integration_tests": false
+      },
+      "test_integration.py": {
+        "size": 28485,
+        "test_functions": 18,
+        "async_tests": 18,
+        "mock_usage": 56,
+        "integration_tests": true
+      },
+      "test_tools.py": {
+        "size": 20636,
+        "test_functions": 31,
+        "async_tests": 29,
+        "mock_usage": 73,
+        "integration_tests": true
+      },
+      "test_agents.py": {
+        "size": 23418,
+        "test_functions": 29,
+        "async_tests": 14,
+        "mock_usage": 98,
+        "integration_tests": true
+      }
+    },
+    "pytest_config": {
+      "exists": true,
+      "has_markers": true,
+      "test_paths": true,
+      "coverage": false
+    },
+    "pytest_collection": {
+      "success": false,
+      "output": "final_market_hours_test.py::test_market_hours_fix\nfinal_market_hours_test.py::test_specific_scenarios\ntest_actual_orchestrator.py::test_actual_orchestrator\ntest_actual_orchestrator.py::test_simple_method_call\ntest_basic.py::test_imports\ntest_basic.py::test_basic_functionality\ntest_basic.py::test_config_loading\ntest_integration_simple.py::test_core_imports\ntest_integration_simple.py::test_config_manager\ntest_integration_simple.py::test_data_types\ntest_integration_simple.py::test_data_manager_crea",
+      "errors": ""
+    }
+  },
+  "data_state": {
+    "database": {
+      "tables": [
+        "trades"
+      ],
+      "table_data": {
+        "trades": {
+          "count": 0
+        }
+      }
+    },
+    "logs": {
+      "orchestrator.log": {
+        "size": 0,
+        "modified": "2025-08-15T16:09:59.755440",
+        "has_content": false
+      },
+      "strategy_assessment.log": {
+        "size": 1614,
+        "modified": "2025-09-15T14:03:16.815598",
+        "has_content": true
+      },
+      "simple_monitor_20250914_212616.log": {
+        "size": 2685,
+        "modified": "2025-09-14T21:27:17.026950",
+        "has_content": true
+      },
+      "simple_monitor_20250914_212315.log": {
+        "size": 2934,
+        "modified": "2025-09-14T21:26:16.032418",
+        "has_content": true
+      },
+      "simple_monitor_20250914_212717.log": {
+        "size": 3333,
+        "modified": "2025-09-14T22:08:18.019106",
+        "has_content": true
+      }
+    },
+    "backups": {
+      "count": 172,
+      "latest": "20250917_092045"
+    }
+  },
+  "deployment_safety": {
+    "paper_trading_available": true,
+    "live_env_separate": true,
+    "example_env_exists": true,
+    "deployment_script_exists": true,
+    "current_mode": "unknown",
+    "docker_available": true,
+    "risk_management_files": 1
+  },
+  "automation_capabilities": {
+    "deployment_script": true,
+    "docker_compose": true,
+    "dockerfile": true,
+    "requirements_file": true,
+    "integration_tests": true,
+    "github_actions": false,
+    "makefile": false,
+    "deployment_script_functional": true
+  }
+}

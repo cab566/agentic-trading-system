@@ -1,0 +1,252 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Master Database
+  postgres-master:
+    image: postgres:15-alpine
+    container_name: postgres-master
+    environment:
+      POSTGRES_DB: trading_db
+      POSTGRES_USER: trading_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-trading_pass}
+      POSTGRES_REPLICATION_USER: replicator
+      POSTGRES_REPLICATION_PASSWORD: ${REPLICATION_PASSWORD:-repl_pass}
+    volumes:
+      - postgres_master_data:/var/lib/postgresql/data
+      - ./scripts/init-master.sql:/docker-entrypoint-initdb.d/init-master.sql
+      - ./config/postgresql-master.conf:/etc/postgresql/postgresql.conf
+    ports:
+      - "5432:5432"
+    command: >
+      postgres
+      -c config_file=/etc/postgresql/postgresql.conf
+      -c wal_level=replica
+      -c max_wal_senders=3
+      -c max_replication_slots=3
+      -c hot_standby=on
+    networks:
+      - trading_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U trading_user -d trading_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # PostgreSQL Slave Database (Read Replica)
+  postgres-slave:
+    image: postgres:15-alpine
+    container_name: postgres-slave
+    environment:
+      POSTGRES_DB: trading_db
+      POSTGRES_USER: trading_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-trading_pass}
+      PGUSER: postgres
+      POSTGRES_MASTER_SERVICE: postgres-master
+      POSTGRES_REPLICATION_USER: replicator
+      POSTGRES_REPLICATION_PASSWORD: ${REPLICATION_PASSWORD:-repl_pass}
+    volumes:
+      - postgres_slave_data:/var/lib/postgresql/data
+      - ./scripts/init-slave.sh:/docker-entrypoint-initdb.d/init-slave.sh
+      - ./config/postgresql-slave.conf:/etc/postgresql/postgresql.conf
+    ports:
+      - "5433:5432"
+    depends_on:
+      postgres-master:
+        condition: service_healthy
+    command: >
+      postgres
+      -c config_file=/etc/postgresql/postgresql.conf
+      -c hot_standby=on
+    networks:
+      - trading_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U trading_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+  # PgBouncer Connection Pooler
+  pgbouncer:
+    image: pgbouncer/pgbouncer:latest
+    container_name: pgbouncer
+    environment:
+      DATABASES_HOST: postgres-master
+      DATABASES_PORT: 5432
+      DATABASES_USER: trading_user
+      DATABASES_PASSWORD: ${POSTGRES_PASSWORD:-trading_pass}
+      DATABASES_DBNAME: trading_db
+      POOL_MODE: transaction
+      SERVER_RESET_QUERY: DISCARD ALL
+      MAX_CLIENT_CONN: 100
+      DEFAULT_POOL_SIZE: 20
+      MIN_POOL_SIZE: 5
+      RESERVE_POOL_SIZE: 5
+      SERVER_LIFETIME: 3600
+      SERVER_IDLE_TIMEOUT: 600
+    volumes:
+      - ./config/pgbouncer.ini:/etc/pgbouncer/pgbouncer.ini
+      - ./config/userlist.txt:/etc/pgbouncer/userlist.txt
+    ports:
+      - "6432:5432"
+    depends_on:
+      postgres-master:
+        condition: service_healthy
+    networks:
+      - trading_network
+    healthcheck:
+      test: ["CMD-SHELL", "psql -h localhost -p 5432 -U trading_user -d trading_db -c 'SELECT 1'"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # Redis with Sentinel for High Availability
+  redis-master:
+    image: redis:7-alpine
+    container_name: redis-master
+    command: redis-server --appendonly yes --replica-announce-ip redis-master
+    volumes:
+      - redis_master_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - trading_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  redis-slave:
+    image: redis:7-alpine
+    container_name: redis-slave
+    command: redis-server --appendonly yes --replicaof redis-master 6379 --replica-announce-ip redis-slave
+    volumes:
+      - redis_slave_data:/data
+    depends_on:
+      - redis-master
+    ports:
+      - "6380:6379"
+    networks:
+      - trading_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  redis-sentinel:
+    image: redis:7-alpine
+    container_name: redis-sentinel
+    command: >
+      sh -c "echo 'port 26379
+      sentinel monitor mymaster redis-master 6379 1
+      sentinel down-after-milliseconds mymaster 5000
+      sentinel failover-timeout mymaster 10000
+      sentinel parallel-syncs mymaster 1' > /tmp/sentinel.conf && redis-sentinel /tmp/sentinel.conf"
+    depends_on:
+      - redis-master
+      - redis-slave
+    ports:
+      - "26379:26379"
+    networks:
+      - trading_network
+
+  # Enhanced Trading System with HA Database Connection
+  trading-system:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: trading-system-ha
+    environment:
+      # Primary database connection (through PgBouncer)
+      DATABASE_URL: postgresql://trading_user:${POSTGRES_PASSWORD:-trading_pass}@pgbouncer:5432/trading_db
+      # Read replica for analytics queries
+      DATABASE_READ_URL: postgresql://trading_user:${POSTGRES_PASSWORD:-trading_pass}@postgres-slave:5432/trading_db
+      # Redis with Sentinel
+      REDIS_SENTINEL_HOSTS: redis-sentinel:26379
+      REDIS_MASTER_NAME: mymaster
+      # Connection pool settings
+      DB_POOL_SIZE: 20
+      DB_MAX_OVERFLOW: 30
+      DB_POOL_TIMEOUT: 30
+      DB_POOL_RECYCLE: 3600
+      # Circuit breaker settings
+      CIRCUIT_BREAKER_FAILURE_THRESHOLD: 5
+      CIRCUIT_BREAKER_RECOVERY_TIMEOUT: 30
+      CIRCUIT_BREAKER_EXPECTED_EXCEPTION: DatabaseError
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
+      - ./config:/app/config
+    ports:
+      - "8000:8000"
+    depends_on:
+      pgbouncer:
+        condition: service_healthy
+      redis-sentinel:
+        condition: service_started
+    networks:
+      - trading_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Streamlit Dashboard with HA Support
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: trading-dashboard-ha
+    command: streamlit run unified_trading_dashboard.py --server.port 8501 --server.address 0.0.0.0
+    environment:
+      DATABASE_URL: postgresql://trading_user:${POSTGRES_PASSWORD:-trading_pass}@pgbouncer:5432/trading_db
+      DATABASE_READ_URL: postgresql://trading_user:${POSTGRES_PASSWORD:-trading_pass}@postgres-slave:5432/trading_db
+      REDIS_SENTINEL_HOSTS: redis-sentinel:26379
+      REDIS_MASTER_NAME: mymaster
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
+    ports:
+      - "8501:8501"
+    depends_on:
+      trading-system:
+        condition: service_healthy
+    networks:
+      - trading_network
+    restart: unless-stopped
+
+  # Nginx Load Balancer
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-lb
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/nginx.conf
+      - ./config/ssl:/etc/nginx/ssl
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - trading-system
+      - dashboard
+    networks:
+      - trading_network
+    restart: unless-stopped
+
+volumes:
+  postgres_master_data:
+  postgres_slave_data:
+  redis_master_data:
+  redis_slave_data:
+
+networks:
+  trading_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

@@ -1,0 +1,31 @@
+monitoring:
+  alert_thresholds:
+    error_rate: 0.01
+    memory_usage: 0.8
+    response_time_p95: 200
+  metrics_collection_interval: 30
+performance_metrics:
+  cpu_limit_percent: 80
+  latency_threshold_ms: 100
+  memory_limit_mb: 2048
+  throughput_min_ops_sec: 1000
+test_scenarios:
+  market_data_ingestion:
+    duration_minutes: 10
+    symbols:
+    - AAPL
+    - GOOGL
+    - MSFT
+    - TSLA
+    timeframes:
+    - 1m
+    - 5m
+    - 1h
+    - 1d
+  strategy_execution:
+    max_positions: 10
+    portfolio_size: 100000
+    strategies:
+    - momentum
+    - mean_reversion
+    - arbitrage

@@ -1,0 +1,329 @@
+# Data Sources Configuration
+# Manages all external data connections and API settings
+
+data_sources:
+  # Primary market data sources
+  yfinance:
+    enabled: true
+    priority: 1
+    rate_limit: 2000  # requests per hour
+    timeout: 30
+    retry_attempts: 3
+    cache_duration: 300  # seconds
+    supported_data:
+      - stock_prices
+      - options_data
+      - historical_data
+      - company_info
+      - dividends
+      - splits
+    
+  polygon:
+    enabled: false  # DISABLED: Free tier API key not entitled to real-time data
+    # Requires paid subscription for market data access
+    priority: 2
+    api_key_env: "POLYGON_API_KEY"
+    base_url: "https://api.polygon.io"
+    rate_limit: 4  # requests per minute (conservative for free tier)
+    timeout: 30
+    retry_attempts: 2  # Reduce retries to avoid rate limit hits
+    cache_duration: 300  # Increase cache to 5 minutes
+    batch_requests: true  # Enable request batching
+    fallback_enabled: false  # Fallback disabled - fail fast on errors
+    supported_data:
+      - real_time_quotes
+      - historical_bars
+      - options_data
+      - market_status
+      - company_details
+    
+  alpaca:
+    enabled: true
+    priority: 3
+    api_key_env: "ALPACA_API_KEY"
+    secret_key_env: "ALPACA_SECRET_KEY"
+    base_url: "https://paper-api.alpaca.markets"  # Paper trading
+    # base_url: "https://api.alpaca.markets"  # Live trading
+    rate_limit: 200  # requests per minute
+    timeout: 30
+    retry_attempts: 3
+    supported_data:
+      - account_info
+      - positions
+      - orders
+      - portfolio_history
+      - market_data
+    
+  financial_modeling_prep:
+    enabled: false  # Currently having issues
+    priority: 4
+    api_key_env: "FMP_API_KEY"
+    base_url: "https://financialmodelingprep.com/api/v3"
+    rate_limit: 250  # requests per day (free tier)
+    timeout: 30
+    retry_attempts: 3
+    cache_duration: 3600  # 1 hour
+    supported_data:
+      - financial_statements
+      - company_profile
+      - key_metrics
+      - ratios
+      - earnings
+
+  # News and sentiment data
+  news_api:
+    enabled: true
+    priority: 1
+    api_key_env: "NEWS_API_KEY"
+    base_url: "https://newsapi.org/v2"
+    rate_limit: 1000  # requests per day
+    timeout: 30
+    retry_attempts: 3
+    cache_duration: 1800  # 30 minutes
+    supported_data:
+      - business_news
+      - company_news
+      - market_sentiment
+    
+  benzinga:
+    enabled: false
+    priority: 2
+    api_key_env: "BENZINGA_API_KEY"
+    base_url: "https://api.benzinga.com"
+    rate_limit: 100  # requests per minute
+    timeout: 30
+    retry_attempts: 3
+    cache_duration: 900  # 15 minutes
+    supported_data:
+      - news_feed
+      - earnings_calendar
+      - analyst_ratings
+      - insider_trading
+
+  # Economic data
+  fred:
+    enabled: true
+    priority: 1
+    api_key_env: "FRED_API_KEY"
+    base_url: "https://api.stlouisfed.org/fred"
+    rate_limit: 120  # requests per minute
+    timeout: 30
+    retry_attempts: 3
+    cache_duration: 3600  # 1 hour
+    supported_data:
+      - economic_indicators
+      - interest_rates
+      - inflation_data
+      - gdp_data
+
+  # Cryptocurrency data sources
+  binance:
+    enabled: true
+    priority: 1
+    api_key_env: "BINANCE_API_KEY"
+    secret_key_env: "BINANCE_SECRET_KEY"
+    base_url: "https://testnet.binance.vision"  # Testnet for safety
+    # base_url: "https://api.binance.com"  # Live trading
+    testnet: true
+    rate_limit: 1200  # requests per minute
+    timeout: 30
+    retry_attempts: 3
+    cache_duration: 60  # 1 minute for crypto
+    supported_data:
+      - crypto_prices
+      - crypto_orderbook
+      - crypto_trades
+      - crypto_ticker
+      - klines
+    trading_hours: "24/7"
+    
+  coinbase:
+    enabled: true
+    priority: 2
+    api_key_env: "COINBASE_API_KEY"
+    secret_key_env: "COINBASE_SECRET_KEY"
+    passphrase_env: "COINBASE_PASSPHRASE"
+    base_url: "https://api-public.sandbox.exchange.coinbase.com"  # Sandbox
+    # base_url: "https://api.exchange.coinbase.com"  # Live trading
+    sandbox: true
+    rate_limit: 10  # requests per second
+    timeout: 30
+    retry_attempts: 3
+    cache_duration: 60
+    supported_data:
+      - crypto_prices
+      - crypto_orderbook
+      - crypto_trades
+      - crypto_ticker
+      - candles
+    trading_hours: "24/7"
+
+  # Forex data sources
+  oanda:
+    enabled: true
+    priority: 1
+    api_key_env: "OANDA_API_KEY"
+    account_id_env: "OANDA_ACCOUNT_ID"
+    base_url: "https://api-fxpractice.oanda.com"  # Practice account
+    # base_url: "https://api-fxtrade.oanda.com"  # Live trading
+    practice: true
+    rate_limit: 100  # requests per second
+    timeout: 30
+    retry_attempts: 3
+    cache_duration: 300  # 5 minutes
+    supported_data:
+      - forex_prices
+      - forex_candles
+      - forex_spreads
+      - forex_orderbook
+      - pricing
+    trading_hours: "24/5"  # Sunday 5 PM EST - Friday 5 PM EST
+    
+  forex_factory:
+    enabled: true
+    priority: 2
+    base_url: "https://nfs.faireconomy.media/ff_calendar_thisweek.json"
+    rate_limit: 60  # requests per hour (be respectful)
+    timeout: 30
+    retry_attempts: 3
+    cache_duration: 3600  # 1 hour
+    supported_data:
+      - economic_calendar
+      - forex_news
+      - market_events
+    trading_hours: "24/7"
+    
+  alphavantage_forex:
+    enabled: false  # DISABLED - Demo API key has 25 requests/day limit
+    priority: 3
+    api_key_env: "ALPHA_VANTAGE_API_KEY"
+    base_url: "https://www.alphavantage.co/query"
+    rate_limit: 1  # requests per minute (extremely conservative for demo key)
+    timeout: 30
+    retry_attempts: 1  # Reduce retries to avoid exhausting quota
+    cache_duration: 3600  # 1 hour - aggressive caching
+    supported_data:
+      - forex_daily
+      - forex_intraday
+      - exchange_rates
+    trading_hours: "24/5"
+
+# Data management settings
+data_management:
+  # Caching configuration
+  cache:
+    backend: "redis"  # Options: redis, memory, file
+    redis_url: "redis://localhost:6379/0"
+    default_ttl: 300  # seconds
+    max_memory: "100MB"
+    
+  # Database configuration
+  database:
+    type: "sqlite"  # Options: duckdb, postgresql, sqlite
+    path: "../data/unified_trading_data.db"  # Path to unified trading database
+    # For PostgreSQL:
+    # host: "localhost"
+    # port: 5432
+    # database: "trading_system"
+    # username_env: "DB_USERNAME"
+    # password_env: "DB_PASSWORD"
+    
+  # Data validation
+  validation:
+    enable_data_quality_checks: true
+    max_missing_data_pct: 0.05  # 5%
+    outlier_detection: true
+    outlier_threshold: 3.0  # standard deviations
+    
+  # Data retention
+  retention:
+    raw_data_days: 365
+    processed_data_days: 180
+    cache_data_hours: 24
+    log_data_days: 30
+
+# Rate limiting and throttling
+rate_limiting:
+  global_rate_limit: 1000  # requests per minute across all sources
+  burst_allowance: 50  # additional requests for bursts
+  backoff_strategy: "exponential"  # Options: linear, exponential
+  max_backoff_time: 300  # seconds
+  
+  # Per-source overrides
+  source_limits:
+    polygon: 5
+    alpaca: 200
+    news_api: 10
+    yfinance: 100
+    binance: 1200
+    coinbase: 10
+    oanda: 100
+    forex_factory: 1
+    alphavantage_forex: 5
+
+# Data quality and monitoring
+monitoring:
+  health_checks:
+    enabled: true
+    interval: 300  # seconds
+    timeout: 30
+    
+  alerts:
+    enabled: true
+    email_notifications: false
+    slack_webhook_env: "SLACK_WEBHOOK_URL"
+    
+  metrics:
+    track_response_times: true
+    track_error_rates: true
+    track_cache_hit_rates: true
+    
+# Error handling and monitoring
+error_handling:
+  enabled: true
+  max_failures_before_alert: 3
+  alert_timeout: 60  # seconds
+  
+  # Error reporting - no fallbacks, fail fast
+  error_reporting:
+    log_errors: true
+    alert_on_failure: true
+    fail_fast: true
+
+# Data preprocessing
+preprocessing:
+  # Price data cleaning
+  price_data:
+    remove_outliers: true
+    fill_missing_values: true
+    fill_method: "forward_fill"  # Options: forward_fill, interpolate, drop
+    
+  # Volume data cleaning
+  volume_data:
+    remove_zero_volume: true
+    smooth_volume_spikes: true
+    
+  # News data processing
+  news_data:
+    sentiment_analysis: true
+    language_filter: ["en"]
+    duplicate_removal: true
+    
+# Security and compliance
+security:
+  encrypt_api_keys: true
+  log_api_calls: false  # Set to false to avoid logging sensitive data
+  mask_sensitive_data: true
+  
+  # API key rotation
+  key_rotation:
+    enabled: false
+    rotation_interval_days: 90
+    
+# Development and testing
+development:
+  # Mock data configuration - DISABLED for production
+  mock_data_enabled: false
+  mock_data_path: "./tests/mock_data/"  # Only used in testing environment
+  debug_mode: false
+  verbose_logging: false

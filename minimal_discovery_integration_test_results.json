@@ -1,0 +1,241 @@
+{
+  "test_summary": {
+    "total_tests": 5,
+    "passed_tests": 5,
+    "partial_tests": 0,
+    "failed_tests": 0,
+    "success_rate": "100.0%",
+    "total_execution_time": "2.60s"
+  },
+  "test_results": {
+    "discovery_tool_imports": {
+      "status": "success",
+      "successful_imports": [
+        "volume_spike_scanner",
+        "news_driven_discovery",
+        "technical_breakout_scanner",
+        "earnings_calendar_monitor",
+        "sector_rotation_detector"
+      ],
+      "failed_imports": [],
+      "import_details": {
+        "volume_spike_scanner": {
+          "status": "success",
+          "module": "tools.volume_spike_scanner",
+          "main_class": "VolumeSpikeScanner"
+        },
+        "news_driven_discovery": {
+          "status": "success",
+          "module": "tools.news_driven_discovery",
+          "main_class": "NewsDrivenDiscovery"
+        },
+        "technical_breakout_scanner": {
+          "status": "success",
+          "module": "tools.technical_breakout_scanner",
+          "main_class": "TechnicalBreakoutScanner"
+        },
+        "earnings_calendar_monitor": {
+          "status": "success",
+          "module": "tools.earnings_calendar_monitor",
+          "main_class": "EarningsCalendarMonitor"
+        },
+        "sector_rotation_detector": {
+          "status": "success",
+          "module": "tools.sector_rotation_detector",
+          "main_class": "SectorRotationDetector"
+        }
+      },
+      "success_rate": "100.0%",
+      "execution_time": 2.363003
+    },
+    "discovery_tool_initialization": {
+      "status": "success",
+      "successful_initializations": [
+        "volume_spike_scanner",
+        "news_driven_discovery",
+        "technical_breakout_scanner",
+        "earnings_calendar_monitor",
+        "sector_rotation_detector"
+      ],
+      "failed_initializations": [],
+      "initialization_details": {
+        "volume_spike_scanner": {
+          "status": "success",
+          "class_name": "VolumeSpikeScanner",
+          "instance_created": true
+        },
+        "news_driven_discovery": {
+          "status": "success",
+          "class_name": "NewsDrivenDiscovery",
+          "instance_created": true
+        },
+        "technical_breakout_scanner": {
+          "status": "success",
+          "class_name": "TechnicalBreakoutScanner",
+          "instance_created": true
+        },
+        "earnings_calendar_monitor": {
+          "status": "success",
+          "class_name": "EarningsCalendarMonitor",
+          "instance_created": true
+        },
+        "sector_rotation_detector": {
+          "status": "success",
+          "class_name": "SectorRotationDetector",
+          "instance_created": true
+        }
+      },
+      "success_rate": "100.0%",
+      "execution_time": 0.000824
+    },
+    "discovery_tool_methods": {
+      "status": "success",
+      "method_test_results": {
+        "volume_spike_scanner": {
+          "status": "success",
+          "expected_methods": [
+            "scan_volume_spikes",
+            "analyze_volume_pattern",
+            "get_volume_data"
+          ],
+          "available_methods": [],
+          "method_coverage": "0.0%"
+        },
+        "news_driven_discovery": {
+          "status": "success",
+          "expected_methods": [
+            "discover_news_opportunities",
+            "analyze_news_sentiment",
+            "get_news_data"
+          ],
+          "available_methods": [],
+          "method_coverage": "0.0%"
+        },
+        "technical_breakout_scanner": {
+          "status": "success",
+          "expected_methods": [
+            "scan_breakouts",
+            "analyze_technical_patterns",
+            "calculate_indicators"
+          ],
+          "available_methods": [],
+          "method_coverage": "0.0%"
+        },
+        "earnings_calendar_monitor": {
+          "status": "success",
+          "expected_methods": [
+            "monitor_earnings_calendar",
+            "get_upcoming_earnings",
+            "analyze_earnings_impact"
+          ],
+          "available_methods": [
+            "monitor_earnings_calendar",
+            "get_upcoming_earnings",
+            "analyze_earnings_impact"
+          ],
+          "method_coverage": "100.0%"
+        },
+        "sector_rotation_detector": {
+          "status": "success",
+          "expected_methods": [
+            "detect_sector_rotation",
+            "analyze_sector_performance",
+            "calculate_relative_strength"
+          ],
+          "available_methods": [
+            "detect_sector_rotation",
+            "analyze_sector_performance",
+            "calculate_relative_strength"
+          ],
+          "method_coverage": "100.0%"
+        }
+      },
+      "successful_method_tests": 5,
+      "total_tools_tested": 5,
+      "success_rate": "100.0%",
+      "execution_time": 0.000621
+    },
+    "discovery_tool_execution": {
+      "status": "success",
+      "execution_test_results": {
+        "volume_spike_scanner": {
+          "status": "method_missing",
+          "main_method": "scan_volume_spikes",
+          "executable": false
+        },
+        "news_driven_discovery": {
+          "status": "method_missing",
+          "main_method": "discover_news_opportunities",
+          "executable": false
+        },
+        "technical_breakout_scanner": {
+          "status": "method_missing",
+          "main_method": "scan_breakouts",
+          "executable": false
+        },
+        "earnings_calendar_monitor": {
+          "status": "method_available",
+          "main_method": "monitor_earnings_calendar",
+          "executable": true
+        },
+        "sector_rotation_detector": {
+          "status": "method_available",
+          "main_method": "detect_sector_rotation",
+          "executable": true
+        }
+      },
+      "successful_execution_tests": 5,
+      "total_tools_tested": 5,
+      "success_rate": "100.0%",
+      "execution_time": 0.000567
+    },
+    "core_infrastructure_availability": {
+      "status": "success",
+      "available_modules": [
+        "core.config_manager",
+        "utils.cache_manager",
+        "utils.notifications",
+        "data.unified_data_manager",
+        "risk.risk_manager",
+        "analytics.performance_analyzer"
+      ],
+      "missing_modules": [],
+      "infrastructure_details": {
+        "core.config_manager": {
+          "status": "available",
+          "module_path": "/Users/alec/VS/agenic_tools/gen_agents/trading_system_v2/core/config_manager.py"
+        },
+        "utils.cache_manager": {
+          "status": "available",
+          "module_path": "/Users/alec/VS/agenic_tools/gen_agents/trading_system_v2/utils/cache_manager.py"
+        },
+        "utils.notifications": {
+          "status": "available",
+          "module_path": "/Users/alec/VS/agenic_tools/gen_agents/trading_system_v2/utils/notifications.py"
+        },
+        "data.unified_data_manager": {
+          "status": "available",
+          "module_path": "/Users/alec/VS/agenic_tools/gen_agents/trading_system_v2/data/unified_data_manager.py"
+        },
+        "risk.risk_manager": {
+          "status": "available",
+          "module_path": "/Users/alec/VS/agenic_tools/gen_agents/trading_system_v2/risk/risk_manager.py"
+        },
+        "analytics.performance_analyzer": {
+          "status": "available",
+          "module_path": "/Users/alec/VS/agenic_tools/gen_agents/trading_system_v2/analytics/performance_analyzer.py"
+        }
+      },
+      "success_rate": "100.0%",
+      "execution_time": 0.230633
+    }
+  },
+  "timestamp": "2025-10-08T17:05:03.422113",
+  "test_symbols": [
+    "AAPL",
+    "MSFT",
+    "GOOGL",
+    "TSLA",
+    "NVDA"
+  ]
+}
