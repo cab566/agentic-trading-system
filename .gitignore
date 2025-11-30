@@ -1,0 +1,45 @@
+# Environment files
+.env.live
+*.env
+!.env.example
+
+# Python caches and build artifacts
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+
+# OS-specific files
+.DS_Store
+
+# Logs and runtime outputs
+logs/
+*.log
+agent_orchestrator.log
+agentic_trading.log
+
+# Databases and stateful artifacts
+*.db
+alerts.db
+data/trading_data.db
+data/cache/
+
+# Locks and temp files
+*.lock
+*.tmp
+
+# Virtual environments
+venv/
+venv_integration/
+trading_env/
+
+# SSL/keys
+nginx/ssl/
+
+# Notebooks checkpoints
+.ipynb_checkpoints/
